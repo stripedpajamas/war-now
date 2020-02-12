@@ -1,88 +1,82 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
-import Nav from '../components/nav'
+import WinnerChart from '../components/winner'
+import WinningDifference from '../components/winningDifference'
+import play from 'play-war'
 
-const Home = () => (
-  <div>
-    <Head>
-      <title>Home</title>
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
+const Home = () => {
+  const [shouldPlay, setShouldPlay] = useState(false)
+  const [playerOneWins, setPlayerOneWins] = useState(0)
+  const [playerTwoWins, setPlayerTwoWins] = useState(0)
+  const [differences, setDifferences] = useState([])
 
-    <Nav />
+  useEffect(() => {
+    if (!shouldPlay) return
+    const interval = setInterval(() => {
+      const results = play(1)
 
-    <div className="hero">
-      <h1 className="title">Welcome to Next.js!</h1>
-      <p className="description">
-        To get started, edit <code>pages/index.js</code> and save to reload.
-      </p>
+      const [playerOneWin, playerTwoWin, diffs] = results.reduce((acc, res) => {
+        const [playerOneWin, playerTwoWin, diffs] = acc
+        const { winner, winningDifferences } = res
+        const nextPlayerOneWin = (winner === 0 ? 1 : 0) + playerOneWin
+        const nextPlayerTwoWin = (winner === 1 ? 1 : 0) + playerTwoWin
+        const nextDiffs = winningDifferences.reduce((arr, diff, idx) => {
+          arr[idx] = (diffs[idx] || 0) + diff
+          return arr
+        }, [])
+        return [nextPlayerOneWin, nextPlayerTwoWin, nextDiffs]
+      }, [0, 0, []])
 
-      <div className="row">
-        <a href="https://nextjs.org/docs" className="card">
-          <h3>Documentation &rarr;</h3>
-          <p>Learn more about Next.js in the documentation.</p>
-        </a>
-        <a href="https://nextjs.org/learn" className="card">
-          <h3>Next.js Learn &rarr;</h3>
-          <p>Learn about Next.js by following an interactive tutorial!</p>
-        </a>
-        <a
-          href="https://github.com/zeit/next.js/tree/master/examples"
-          className="card"
-        >
-          <h3>Examples &rarr;</h3>
-          <p>Find other example boilerplates on the Next.js GitHub.</p>
-        </a>
+      const nextDifferences = diffs.map((val, idx) => ({
+        x: idx, y: val + ((differences[idx] || {}).y || 0)
+      }))
+
+      setPlayerOneWins(playerOneWins + playerOneWin)
+      setPlayerTwoWins(playerTwoWins + playerTwoWin)
+      setDifferences(nextDifferences)
+    }, 20)
+
+    return () => clearInterval(interval)
+  }, [shouldPlay, playerOneWins, playerTwoWins, differences])
+
+  function togglePlaying () {
+    setShouldPlay(!shouldPlay)
+  }
+
+  return (
+    <div className='wrapper'>
+      <Head>
+        <title>Home</title>
+        <link rel='icon' href='/favicon.ico' />
+        <link rel='stylesheet' href='./styles.css' />
+      </Head>
+
+      <div className='main'>
+        <div />
+        <div className='controls'>
+          <h1>War</h1>
+          <p className='description'>Data visualizations of the boring card game called War.</p>
+          <button onClick={togglePlaying}>{shouldPlay ? 'Stop' : 'Start'} Playing</button>
+        </div>
+        <div />
+        <div className='winner-chart'>
+          <h3>Winners</h3>
+          <p className='description'>The player to win the complete game</p>
+          <WinnerChart playerOneWins={playerOneWins} playerTwoWins={playerTwoWins} />
+        </div>
+        <div className='winning-difference-chart'>
+          <h3>Winning Differences</h3>
+          <p className='description'>The difference between the winning card and the losing card in a single turn</p>
+          <WinningDifference differences={differences} />
+        </div>
+        <div className='other-stuff'>
+          <h3>Some Other Stuff</h3>
+          <p className='description'>TBD</p>
+        </div>
       </div>
     </div>
 
-    <style jsx>{`
-      .hero {
-        width: 100%;
-        color: #333;
-      }
-      .title {
-        margin: 0;
-        width: 100%;
-        padding-top: 80px;
-        line-height: 1.15;
-        font-size: 48px;
-      }
-      .title,
-      .description {
-        text-align: center;
-      }
-      .row {
-        max-width: 880px;
-        margin: 80px auto 40px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-      }
-      .card {
-        padding: 18px 18px 24px;
-        width: 220px;
-        text-align: left;
-        text-decoration: none;
-        color: #434343;
-        border: 1px solid #9b9b9b;
-      }
-      .card:hover {
-        border-color: #067df7;
-      }
-      .card h3 {
-        margin: 0;
-        color: #067df7;
-        font-size: 18px;
-      }
-      .card p {
-        margin: 0;
-        padding: 12px 0 0;
-        font-size: 13px;
-        color: #333;
-      }
-    `}</style>
-  </div>
-)
+  )
+}
 
 export default Home
