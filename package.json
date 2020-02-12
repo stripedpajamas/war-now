@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "next": "9.2.1",
-    "play-war": "^1.0.0",
+    "play-war": "^1.0.1",
     "react": "16.12.0",
     "react-dom": "16.12.0",
     "victory": "^34.1.1"

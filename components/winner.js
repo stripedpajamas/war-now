@@ -6,9 +6,10 @@ import {
 } from 'victory'
 
 const Winner = (props) => {
-  const { playerOneWins, playerTwoWins } = props
+  const { playerOneWins, playerTwoWins, ties } = props
   const data = [
     { x: 'Player One', y: playerOneWins },
+    { x: 'Tie', y: ties },
     { x: 'Player Two', y: playerTwoWins }
   ]
   const totalGamesPlayed = playerOneWins + playerTwoWins
@@ -20,7 +21,9 @@ const Winner = (props) => {
       <VictoryBar
         barWidth={40}
         data={data}
-        labels={({ datum }) => `wins: ${datum.y}`}
+        labels={({ datum }) => {
+          return datum.x === 'Tie' ? `ties: ${datum.y}` : `wins: ${datum.y}`
+        }}
       />
     </VictoryChart>
   )

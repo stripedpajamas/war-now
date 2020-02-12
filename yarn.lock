@@ -4711,10 +4711,10 @@ pkg-up@^3.0.1:
   dependencies:
     find-up "^3.0.0"
 
-play-war@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/play-war/-/play-war-1.0.0.tgz#d045074ab8460376eda0e4c96221a69804b33e19"
-  integrity sha512-NEXfpkph+di/IU6NdQ4Ra00zYsspkkVTIXhdAqxBdMnMViMWCCuAEQeF+GS2MfGakWWowwSYu348ZjR61iSPKw==
+play-war@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/play-war/-/play-war-1.0.1.tgz#30e8a640cb370391d8c181ba62bc86291afb5138"
+  integrity sha512-m4ln+uBF37KPcvoS+R15R+6DNIujTygb+qWJj971GDZfMVCCSeLVek/gJaUzdA1UyCVbOAwpW3XAro1vYEa/jw==
   dependencies:
     secure-shuffle "^1.2.0"
 

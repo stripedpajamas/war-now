@@ -52,6 +52,26 @@ h3 {
   font-weight: bold;
 }
 
+.wrapper {
+  min-height: calc(100vh - 50px);
+}
+
+.footer {
+  font-size: 0.75em;
+  text-align: center;
+  align-items: center;
+  height: 25px;
+}
+
+.footer > a {
+  text-decoration: none;
+  color: black;
+}
+
+.footer > a:hover {
+  color: gray;
+}
+
 .main {
   margin: 10px auto;
   text-align: center;
@@ -59,12 +79,25 @@ h3 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   max-width: 1000px;
+  grid-row-gap: 2em;
 }
 
 .description {
   font-style: italic;
 }
+
 .controls > button {
   padding: 10px;
   margin: 20px;
+}
+
+.data-container {
+  display: grid;
+  grid-template-rows: 15% 1fr;
+  align-items: center;
+}
+
+.number-of-turns {
+  font-size: 2em;
+  font-weight: bold;
 }
